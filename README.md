@@ -12,3 +12,11 @@ In the `source_data` folder, you will find the following:
 + `hygdata_v3.csv` - A dataset of roughly 100k nearby stars [Link](https://www.astronexus.com/hyg)
 
 + `exoplanet.eu_catalog.csv` - Dataset of exoplanets [Link](http://exoplanet.eu/catalog/)
+
+## Running the code
+
+TODO: DOCUMENT
+
+## Output Format
+
+TODO: DOCUMENT
