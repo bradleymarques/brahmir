@@ -8,6 +8,16 @@
 This is a project (written in R) aimed at cleaning and processing several
 datasets of nearby stars and exoplanets into a single normalized dataset.
 
+## Images
+
+### Planets only
+
+![Planets](images/planets.png)
+
+### Planets and Stars
+
+![Planets And Stars](images/planets_and_stars.png)
+
 ## Source Data
 
 In the `source_data` folder, you will find the following:
@@ -32,13 +42,3 @@ The code outputs two semicolon-delimited files:
 
 + `planets.csv`
 + `stars.csv`
-
-## Images
-
-### Planets only
-
-![Planets](images/planets.png)
-
-### Planets and Stars
-
-![Planets And Stars](images/planets_and_stars.png)
