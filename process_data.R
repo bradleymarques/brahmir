@@ -16,12 +16,25 @@ planets <- add_stars_to_planets(stars = stars, planets = planets, threshold = 1)
 stars <- add_planet_counts(stars, planets)
 
 # (OPTIONAL) Plot the data as a sense-check
-plot_data <- sample_n(stars, 10000) %>%
-  dplyr::select(x, y, z) %>%
-  mutate(type = "star") %>%
-  rbind(
-    dplyr::select(planets, x, y, z) %>%
-    mutate(type = "planet")
-  )
+# plot_data(stars, planets)
 
-plot_ly(plot_data, x = ~x, y = ~y, z = ~z, color = ~type, opacity = 0.2)
+# Write the data out
+write.table(
+  planets,
+  file = "output/planets.csv",
+  sep = ";",
+  na = "",
+  dec = ".",
+  row.names = FALSE,
+  col.names = TRUE
+)
+
+write.table(
+  stars,
+  file = "output/stars.csv",
+  sep = ";",
+  na = "",
+  dec = ".",
+  row.names = FALSE,
+  col.names = TRUE
+)

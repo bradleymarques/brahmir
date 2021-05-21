@@ -1,6 +1,7 @@
 require(dplyr)
 require(celestial)
 require(nabor)
+require(plotly)
 
 ##
 # Cleans up a string by:
@@ -130,4 +131,16 @@ add_planet_counts <- function(stars, planets) {
   stars$planet_count[is.na(stars$planet_count)] <- 0
 
   return(stars)
+}
+
+plot_data <- function(stars, planets) {
+  p <- sample_n(stars, 10000) %>%
+  dplyr::select(x, y, z) %>%
+    mutate(type = "star") %>%
+    rbind(
+      dplyr::select(planets, x, y, z) %>%
+      mutate(type = "planet")
+    )
+
+  plot_ly(p, x = ~x, y = ~y, z = ~z, color = ~type, opacity = 0.2)
 }
