@@ -1,5 +1,8 @@
 # Brahmir
 
++ **Brahma** - Brahma is the first god in the Hindu triumvirate, or trimurti.
++ **Ymir** - Ymir is a primeval being in Norse mythology who is the progenitor of all jötnar (giants).
+
 ## What is this?
 
 This is a project (written in R) aimed at cleaning and processing several
@@ -9,14 +12,33 @@ datasets of nearby stars and exoplanets into a single normalized dataset.
 
 In the `source_data` folder, you will find the following:
 
-+ `hygdata_v3.csv` - A dataset of roughly 100k nearby stars [Link](https://www.astronexus.com/hyg)
++ `hygdata_v3.csv` - A dataset of roughly 100,000 nearby stars [Link](https://www.astronexus.com/hyg)
 
-+ `exoplanet.eu_catalog.csv` - Dataset of exoplanets [Link](http://exoplanet.eu/catalog/)
++ `exoplanet.eu_catalog.csv` - Dataset of all ~4300 exoplanets [Link](http://exoplanet.eu/catalog/)
 
 ## Running the code
 
-TODO: DOCUMENT
+Install `R` and install required packages:
+
+```{r}
+install.packages(c("dplyr", "celestial", "nabor", "plotly"))
+```
+
+Run the code in `process_data.R`.
 
 ## Output Format
 
-TODO: DOCUMENT
+The code outputs two semicolon-delimited files:
+
++ `planets.csv`
++ `stars.csv`
+
+## Images
+
+### Planets only
+
+![Planets](images/planets.png)
+
+### Planets and Stars
+
+![Planets And Stars](images/planets_and_stars.png)
