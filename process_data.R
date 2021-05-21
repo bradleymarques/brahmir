@@ -38,3 +38,24 @@ write.table(
   row.names = FALSE,
   col.names = TRUE
 )
+
+# Write samples of the data out
+write.table(
+  head(planets, 5),
+  file = "output/samples/planets.csv",
+  sep = ";",
+  na = "",
+  dec = ".",
+  row.names = FALSE,
+  col.names = TRUE
+)
+
+write.table(
+  head(stars, 5),
+  file = "output/samples/stars.csv",
+  sep = ";",
+  na = "",
+  dec = ".",
+  row.names = FALSE,
+  col.names = TRUE
+)

@@ -40,5 +40,10 @@ Run the code in `process_data.R`.
 
 The code outputs two semicolon-delimited files:
 
-+ `planets.csv`
 + `stars.csv`
++ `planets.csv`
+
+## Sample Output
+
+[./output/samples/stars.csv](./output/samples/stars.csv)
+[./output/samples/planets.csv](./output/samples/planets.csv)
