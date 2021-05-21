@@ -45,5 +45,5 @@ The code outputs two semicolon-delimited files:
 
 ## Sample Output
 
-[./output/samples/stars.csv](./output/samples/stars.csv)
-[./output/samples/planets.csv](./output/samples/planets.csv)
++ [./output/samples/stars.csv](./output/samples/stars.csv)
++ [./output/samples/planets.csv](./output/samples/planets.csv)
