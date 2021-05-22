@@ -31,7 +31,17 @@ write.table(
   na = "",
   dec = ".",
   row.names = FALSE,
-  col.names = TRUE
+  col.names = TRUE,
+)
+
+write.table(
+  filter(planets, !is.na(star_id)),
+  file = "output/planets_with_stars.csv",
+  sep = ";",
+  na = "",
+  dec = ".",
+  row.names = FALSE,
+  col.names = TRUE,
 )
 
 write.table(

@@ -27,7 +27,7 @@ import_and_clean_stars <- function(file="source_data/hygdata_v3.csv") {
     dec = ".",
     na.strings = ""
   ) %>%
-    dplyr::rename(
+    dplyr::select(
       hyg_database_id = id,
       hipparcos_catalog_id = hip,
       henry_draper_catalog_id = hd,
@@ -43,7 +43,13 @@ import_and_clean_stars <- function(file="source_data/hygdata_v3.csv") {
       spectral_type = spect,
       color_index = ci,
       constellation = con,
-      luminosity = lum
+      luminosity = lum,
+      x,
+      y,
+      z,
+      velocity_x = vx,
+      velocity_y = vy,
+      velocity_z = vz
     ) %>% # Filter out those whose distance is not known
     filter(
       distance_from_sol <= 25000
@@ -64,7 +70,7 @@ import_and_clean_stars <- function(file="source_data/hygdata_v3.csv") {
 # Imports ~4700 exoplanet data from exoplanet.eu_catalog.csv
 #
 import_and_clean_exoplanet_eu_catalog <- function(file="source_data/exoplanet.eu_catalog.csv") {
-  planets <- read.csv2(file = file, header = TRUE, sep = ",") %>%
+  planets <- read.csv2(file = file, header = TRUE, sep = ",", na.strings = "") %>%
     dplyr::rename(
       planet_name = "X..name",
     ) %>%
@@ -81,6 +87,11 @@ import_and_clean_exoplanet_eu_catalog <- function(file="source_data/exoplanet.eu
     relocate(
       planet_id
     )
+
+  planets$alternate_names[planets$alternate_names == ""] <- NA
+  planets$star_alternate_names[planets$star_alternate_names == ""] <- NA
+
+  return(planets)
 }
 
 ##
