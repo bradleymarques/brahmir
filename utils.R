@@ -58,7 +58,8 @@ import_and_clean_stars <- function(file="source_data/hygdata_v3.csv") {
     mutate(
       star_id = row_number()
     ) %>%
-    relocate(star_id)
+    relocate(star_id) %>%
+    arrange(distance_from_sol)
 }
 
 ##
@@ -223,7 +224,7 @@ plot_stars <- function(stars) {
     x = data$x,
     y = data$y,
     z = data$z,
-    opacity = 0.5,
+    opacity = 1,
     marker = list(
       color = data$hex,
       size = data$absolute_magnitude
