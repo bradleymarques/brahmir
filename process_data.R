@@ -15,8 +15,13 @@ planets <- add_stars_to_planets(stars = stars, planets = planets, threshold = 1)
 # Get planet count per star
 stars <- add_planet_counts(stars, planets)
 
-# (OPTIONAL) Plot the data as a sense-check
-# plot_data(stars, planets)
+# Add additional data
+stars <- add_temperature_and_wavelength(stars)
+stars <- add_color(stars)
+
+# (OPTIONAL) Plots
+# plot_positions(stars, planets)
+# plot_stars(stars)
 
 # Write the data out
 write.table(

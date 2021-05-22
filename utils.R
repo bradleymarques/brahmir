@@ -3,6 +3,8 @@ require(celestial)
 require(nabor)
 require(plotly)
 
+WEINS_DISPLACEMENT_CONSTANT <- 2898000 # nanometers x Kelvin
+
 ##
 # Cleans up a string by:
 #
@@ -14,11 +16,17 @@ clean_string <- function(input) {
 }
 
 ##
-# Imports and cleans data from the HGY dataset. This dataset contains ~100k stars
-# closest to Sol
+# Imports and cleans data from the HGY dataset. This dataset contains ~100k
+# stars closest to Sol
 #
 import_and_clean_stars <- function(file="source_data/hygdata_v3.csv") {
-  read.csv2(file = file, header = TRUE, sep = ",", dec = ".", na.strings = "") %>%
+  read.csv2(
+    file = file,
+    header = TRUE,
+    sep = ",",
+    dec = ".",
+    na.strings = ""
+  ) %>%
     dplyr::rename(
       hyg_database_id = id,
       hipparcos_catalog_id = hip,
@@ -44,7 +52,8 @@ import_and_clean_stars <- function(file="source_data/hygdata_v3.csv") {
       bayer_flamsteed_designation = clean_string(bayer_flamsteed_designation),
       proper_name = clean_string(proper_name),
       spectral_type = clean_string(spectral_type),
-      color_index = clean_string(color_index)
+      color_index = as.numeric(color_index),
+      absolute_magnitude = as.numeric(absolute_magnitude)
     ) %>%
     mutate(
       star_id = row_number()
@@ -116,7 +125,6 @@ add_stars_to_planets <- function(stars, planets, threshold=1) {
   return(planets)
 }
 
-
 add_planet_counts <- function(stars, planets) {
   planet_counts <- stars %>%
     dplyr::select(star_id) %>%
@@ -133,7 +141,69 @@ add_planet_counts <- function(stars, planets) {
   return(stars)
 }
 
-plot_data <- function(stars, planets) {
+add_temperature_and_wavelength <- function(stars) {
+  stars <- stars %>%
+    mutate(temperature = color_index_to_temperature(color_index)) %>%
+    mutate(peak_wavelength = temperature_to_wavelength(temperature))
+}
+
+add_color <- function(stars) {
+  color_table <- read.csv2(
+    file = "source_data/color_index_to_color_table.csv",
+    header = TRUE,
+    sep = ";",
+    dec = ".",
+    na.strings = ""
+  )
+  color_data <- color_table$color_index
+  star_data <- stars$color_index
+
+  nearest_neighbours <- as.data.frame(
+    knn(
+      data = color_data,
+      query = star_data,
+      k = 1
+    )
+  )
+
+  stars$color_id <- nearest_neighbours$nn.idx
+
+  stars <- stars %>% left_join(
+    dplyr::select(
+      color_table,
+      color_id,
+      hex_color,
+      red_color,
+      green_color,
+      blue_color
+    ),
+    by = "color_id"
+  )
+
+  return(stars)
+}
+
+##
+# https://www.quora.com/How-can-I-derive-an-RGB-value-from-the-color-index-of-stars
+#
+color_index_to_temperature <- function(color_index) {
+  4600 * (
+    (1.0 / (0.92 * color_index + 1.7)) +
+    (1.0 / (0.92 * color_index + 0.62))
+  )
+}
+
+##
+# https://www.quora.com/How-can-I-derive-an-RGB-value-from-the-color-index-of-stars
+#
+temperature_to_wavelength <- function(temperature) {
+  (WEINS_DISPLACEMENT_CONSTANT / temperature)
+}
+
+################################################################################
+# Plotting functions
+
+plot_positions <- function(stars, planets) {
   p <- sample_n(stars, 10000) %>%
   dplyr::select(x, y, z) %>%
     mutate(type = "star") %>%
@@ -143,4 +213,21 @@ plot_data <- function(stars, planets) {
     )
 
   plot_ly(p, x = ~x, y = ~y, z = ~z, color = ~type, opacity = 0.2)
+}
+
+plot_stars <- function(stars) {
+  data <- sample_n(stars, 10000)
+
+  fig <- plot_ly(type = "scatter3d", mode = "markers")
+  fig <- fig %>% add_trace(
+    x = data$x,
+    y = data$y,
+    z = data$z,
+    opacity = 0.5,
+    marker = list(
+      color = data$hex,
+      size = data$absolute_magnitude
+    )
+  )
+  fig
 }
