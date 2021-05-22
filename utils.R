@@ -55,11 +55,9 @@ import_and_clean_stars <- function(file="source_data/hygdata_v3.csv") {
       color_index = as.numeric(color_index),
       absolute_magnitude = as.numeric(absolute_magnitude)
     ) %>%
-    mutate(
-      star_id = row_number()
-    ) %>%
-    relocate(star_id) %>%
-    arrange(distance_from_sol)
+    arrange(distance_from_sol) %>%
+    mutate(star_id = row_number()) %>%
+    relocate(star_id)
 }
 
 ##
